@@ -27,32 +27,32 @@ void sort(int member[], int N)
 int main()
 {
 	int T;
-    scanf(&quot;%d&quot;, &T);
+    scanf("%d", &T);
 
 	for(int test_case = 1; test_case <= T; ++test_case)
 	{	
         // N은 점원 수	B는 빌딩 길이
 		int N, B; 
-        scanf(&quot;%d %d&quot;, &N, &B);
+        scanf("%d %d", &N, &B);
         
         //검증용
-        //printf(&quot;B: %d\n&quot;, B);
+        //printf("B: %d\n", B);
         
         //점원 입력
         int member[N];
         
         for(int i = 0; i < N; i++)
         {
-        	scanf(&quot;%d &quot;, &member[i]);
+        	scanf("%d ", &member[i]);
         }
         
         // 검증용
         /*for(int i = 0; i < N; i++)
         {
-        	printf(&quot;%d &quot;, member[i]);
+        	printf("%d ", member[i]);
         }
-        printf(&quot;\n&quot;);*/
-        
+        printf("\n");*/
+
         //점원 키의 합
         int sum = 0;
         for(int i = 0; i < N; i ++)
@@ -100,7 +100,7 @@ int main()
         }
         
 		//결과출력
-        printf(&quot;#%d %d\n&quot;, test_case, sum - B);
+        printf("#%d %d\n", test_case, sum - B);
         
     }
     
