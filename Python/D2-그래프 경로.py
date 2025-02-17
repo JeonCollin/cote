@@ -52,7 +52,7 @@ def DFS(addj_arr, S, G, V):
                 push(start)
                 # 노드 이동
                 start = node
-                # print('ㄴ',start)
+                print('ㄴ',start)
                 # print(visited[start])
 
                 #간 곳이 도착점이라면 게임 종료
@@ -62,7 +62,7 @@ def DFS(addj_arr, S, G, V):
         # 이미 방문한 노드면 돌아간다
         else:
             start = pop()
-            # print('ㄷ',start)
+            print('ㄷ',start)
             # print(visited[start])
             # underflow 상황이면 G에 도착 못하는 거임
             if(start == False):
