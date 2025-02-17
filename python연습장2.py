@@ -1,87 +1,39 @@
-def count_num(mylist, num):
-    # 리스트에서 해당 숫자의 개수를 세는 함수
-    count = 0
-    
-    for i in range(len(mylist)):
-        if(mylist[i] == num):
-            count += 1
+T = int(input())
 
-    return count
+for t in range(1, T+1):
 
-def max_num(mylist):
-    # 리스트에서 최댓값을 찾아주는 함수
-    max = mylist[0]
+    # L 칼로리를 넘지 않아야 함
+    N, L = list(map(int, input().split()))
 
-    for i in range(len(mylist)):
-        if(mylist[i] >= max):
-            max = mylist[i]
-    return max
+    # 맛, 칼로리
+    mylist = [0]*N
 
-def delete_max(mylist, maxN):
-    # 리스트에서 최대값을 제거하는 함수
-    for i in range(len(mylist)):
-        if(mylist[i] == maxN):
-            mylist[i] = 0
+    for n in range(N):
+        mylist[n] = list(map(int, input().split()))
 
-    return mylist
+    # 최대 맛
+    maxT = 0
 
+    # 비트마스킹을 이용한 부분집합 선정
+    # 전체 부분집합의 개수 만큼 루프를 돌린다
+    for i in range(1 << N):
+        # 특정한 모습의 i가 나온다
+        # i == 10101 이라고 가정
 
-# 총 N 라운드
-N = int(input())
+        # 부분집합의 맛, 칼로리 초기화
+        taste = 0
+        calo = 0
 
-for n in range(1, N+1):
+        for j in range(N):
 
-    # 별4 > 동그라미3 > 네모2 > 세모1
-    # 카드 수, [카드리스트]
-    myAlist = list(map(int, input().split()))
-    Alist = myAlist[1:]
-    myBlist = list(map(int, input().split()))
-    Blist = myBlist[1:]
+            # j를 shifting 한 부분이 1이라면
+            # 즉 0,2,4번째 인덱스
+            if(i & (1 << j)):
+                taste += mylist[j][0]
+                calo += mylist[j][1]
 
-    win = ''
+        # 최대 값 갱신: 칼로리가 어느 정도 이하일 때
+        if(taste >= maxT and calo <= L):
+            maxT = taste
 
-    while True:
-        # print(Alist)
-        # print(Blist)
-        myAlist.sort()
-        myBlist.sort()
-
-        # 무승부: 둘이 똑같다
-        if(Alist == Blist):
-            win = 'D'
-            break
-
-        maxA = max_num(Alist)
-        maxB = max_num(Blist)
-        countA = count_num(Alist, maxA)
-        countB = count_num(Blist, maxB)
-
-        # 최대값이 큰 쪽이 이긴다
-        if(maxA > maxB):
-            win = 'A'
-            break
-        
-        elif(maxA < maxB):
-            win = 'B'
-            break
-        
-        # 둘 다 최대 수가 같을 경우
-        else:
-            # 최대값이 많은 쪽이 이긴다
-            if(countA > countB):
-                win = 'A'
-                break
-
-            elif(countA < countB):
-                win = 'B'
-                break
-            
-            # 그것 마저 같으면
-            else:
-                # 최대값을 제외하고 다시 비교
-                Alist = delete_max(Alist, maxA)
-                Blist = delete_max(Blist, maxB)
-                # print(Alist)
-                # print(Blist)
-
-    print(win)
+    print(f'#{t} {maxT}')
