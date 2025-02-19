@@ -26,50 +26,28 @@ def pop():
         return stack[top+1]
 
 
-def is_arrive(adj_arr, S, G):
-
+def is_arrive(adj_arr, start, G):
+    global answer
+    #print(start)
+    
     # 방문기록
-    visited = [0] *51
+    visited[start] = 1
 
-    start = S
-    end = G
+    # 인접리스트를 순회하며 갈 수 있는 곳을 찾자
+    for node in range(1, len(adj_arr[start])):
+        # 이어져 있고 방문한 적이 없다면 방문한다
+        if(adj_arr[start][node] == 1 and visited[node] == 0):
+            # 종료조건: 도착점일 경우
+            #print(node)
+            if(node == G):
+                # 리턴을 쓰면 현재 함수에 대해서 리턴이라
+                # 재귀 구조면 씨알도 안먹힌다
+                answer = 1
+            # 지금 지점을 node로 이동하고 재귀호출
+            # 재귀함수가 컴퓨터 메모리의 stack을 이용하니까
+            # 따로 push나 pop을 해줄 필요가 없다
+            is_arrive(adj_arr, node, G)
 
-    visited[start] = 1 
-
-    while True:
-       
-       # 방문기록
-        if(visited[start] == 0):
-            visited[start] = 1 
-
-        for node in range(len(adj_arr[start])):
-            # 이어져 있고 방문한 적이 없다면 방문한다
-            if(adj_arr[start][node] == 1 and visited[node] == 0):
-                # 방문 기록
-                # visited[node] = 1
-                # print('A',start)
-                # 이전 위치는 stack에 저장
-                push(start)
-                # 노드 변경
-                start = node
-
-                # 종료조건: 도착점일 경우
-                if(start == end):
-                    return 1
-                
-                break
-                
-        # 물러나는 경우: 연결된 곳이 없을 때
-        # 또는 이미 방문한 곳일 때
-        else:
-            # print('b', start)
-            start = pop()
-            # print('c', start)
-
-            # 종료조건: 도착하지 못한 경우
-            # 시작보다 더 뒤로 가게된다
-            if(start == False):
-                return 0
 
 T = int(input())
 
@@ -87,6 +65,9 @@ for t in range(1, T+1):
     # 숫자가 1부터 시작해서 51개로 만들어야 함
     adj_arr = [[0]*51 for _ in range(51)]
 
+    # 방문리스트 생성
+    visited = [0] *51
+
     # E번 동안 출발, 도착 노드 정보가 주어짐
     for e in range(E):
         start, arrive = list(map(int, input().split()))
@@ -95,5 +76,8 @@ for t in range(1, T+1):
     # 마지막에 진짜 출발점과 도착노드가 주어짐
     S, G = list(map(int, input().split()))
 
+    answer = 0
+    is_arrive(adj_arr, S, G)
+
     # 결과출력
-    print(f'#{t} {is_arrive(adj_arr, S, G)}')
+    print(f'#{t} {answer}')

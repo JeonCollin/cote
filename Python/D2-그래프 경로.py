@@ -37,8 +37,8 @@ def DFS(addj_arr, S, G, V):
     while True:
 
         # 지금 있는 노드를 방문했다고 기록한다
-        # if(visited[start] == 0):
-        #     visited[start] = 1
+        if(visited[start] == 0):
+            visited[start] = 1
         #     # print('ㄱ',start)
         #     # print(visited[start])
             
