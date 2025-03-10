@@ -62,7 +62,7 @@ def dup_permutation(translate):
     # 00132 00213 ...
 
     while True:
-
+        pass
         
 
 T = int(input())

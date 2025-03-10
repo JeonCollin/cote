@@ -1,41 +1,39 @@
-def hex_to_bin(item):
-
-    if(item == '0'):
-        return '0000'
-    elif(item == '1'):
-        return '0001'
-    elif(item == '2'):
-        return '0010'
-    elif(item == '3'):
-        return '0011'
-    elif(item == '4'):
-        return '0100'
-    elif(item == '5'):
-        return '0101'
-    elif(item == '6'):
-        return '0110'
-    elif(item == '7'):
-        return '0111'
-    elif(item == '8'):
-        return '1000'
-    elif(item == '9'):
-        return '1001'
-    elif(item == 'A'):
-        return '1010'
-    elif(item == 'B'):
-        return '1011'
-    elif(item == 'C'):
-        return '1100'
-    elif(item == 'D'):
-        return '1101'
-    elif(item == 'E'):
-        return '1110'
-    elif(item == 'F'):
-        return '1111'
+def permutation(idx):
     
-mystr = '1DB176C588D26EC'
-result = ''
+    # nPr 순열 완성
+    if(idx == R):
+        print(P)
+        
+    # 순열 리스트 고르기
+    else:
+        for i in range(4):
+            if(used[i] == 0):
+                used[i] = 1
+                P[idx] = mylist[i]
+                permutation(idx+1)
+                used[i] = 0
+                
+                
+                
+mylist = [1,2,3,4]
+used = [0,0,0,0]
+R = 2
+P = [0]*R
+PI = [0]*R
 
-for i in range(len(mystr)):
-    result += hex_to_bin(mystr[i])
-print(result)
+# permutation(0)
+
+def nPIr(idx):
+    # 중복순열
+    
+    # 중복순열 완성
+    if(idx == R):
+        print(PI)
+        
+    else:
+        for i in range(4):
+            PI[idx] = mylist[i]
+            nPIr(idx+1)
+        
+nPIr(0)
+        
