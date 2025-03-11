@@ -60,9 +60,30 @@ def dup_permutation(translate):
     # 중복순열은
     # 00123을 점점 오름차순으로 정렬하는 것과 같다
     # 00132 00213 ...
-
-    while True:
-        pass
+    
+    # 피벗 포인트 찾기(오른쪽에서 왼쪽으로 i << i + 1)
+    i = len(translate) - 2
+    while(i >= 0 and translate[i] >= translate[i+1]):
+        i -= 1
+    pivot = i
+    
+    # 모두 다 정렬되었다.
+    if(pivot < 0):
+        return
+    
+    # 피벗 포인트보다 오른쪽에 위치한 값들 중에서
+    # 피벗 값보다 큰 것 들 중 가장 작은 값 찾기
+    j = len(translate-1)
+    
+    # j가 더 뒤에 있고, 더 작다면 그냥 넘긴다
+    while(j > pivot and translate[j] <= translate[pivot]):
+        j -= 1
+        
+    translate[pivot], translate[j] = translate[j], translate[pivot]
+    
+    translate[pivot+1 : ] = reversed(translate[pivot + 1 : ])
+    
+    return translate
         
 
 T = int(input())
@@ -78,7 +99,7 @@ for t in range(1, T+1):
 
     # 연산자 종류대로 나열
     operands = '+'*num_operands[0] + '-'*num_operands[1] + '*'*num_operands[2] + '/'*num_operands[3]
-    translate = '0'*num_operands[0] + '1'*num_operands[1] + '2'*num_operands[2] + '3'*num_operands[3]
+    # translate = '0'*num_operands[0] + '1'*num_operands[1] + '2'*num_operands[2] + '3'*num_operands[3]
 
     #수식에 사용될 숫자 받기
     numbers = list(map(int, input().split()))
@@ -90,7 +111,7 @@ for t in range(1, T+1):
     sumn = 0
     result = []
 
-    permutation(0)
+    # permutation(0)
 
-    #결과 출력
+    #결과 출력   
     print(f'#{t} {max(result) - min(result)}')
