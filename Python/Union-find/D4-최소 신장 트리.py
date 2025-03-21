@@ -1,3 +1,11 @@
+'''
+Prim, Kruckal 문제인데
+간선수가 100만개임
+간선 수가 많을 수록 크루스칼이 불리함
+그래서 Prim으로 풀면 ㄱㅊ은데
+Kruskal로 풀면 터진다
+'''
+
 ################ 최소힙 ###############################
 def enqueue(item):
     global root
@@ -66,10 +74,10 @@ def partition(left, right):
         
         # cross가 아니면 둘이 바꾼다
         if(i < j):
-            mylist[i][2], mylist[j][2] = mylist[j][2], mylist[i][2]
+            mylist[i], mylist[j] = mylist[j], mylist[i]
             
     # 처음과 피봇을 바꾼다
-    mylist[left][2], mylist[j][2] = mylist[j][2], mylist[left][2]
+    mylist[left], mylist[j] = mylist[j], mylist[left]
     
     # 피봇인덱스 반환
     return j
@@ -205,7 +213,7 @@ for t in range(1, T+1):
     root = 1
     rear = 0
     
-    P = Prim(0)
+    # P = Prim(0)
     K = Kruskal()
     
     # 결과 출력
