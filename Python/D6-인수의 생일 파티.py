@@ -64,17 +64,19 @@ def dequeue():
     # 결과 반환
     return temp
 
-def Dikjstra(start, end):
-    global adj_list
+def Dikjstra_adj_arr(start, end):
+    global adj_arr
+    global heap
 
     # 방문리스트 생성
     visited = [0]*(N+1)
+    
+    # 가중치, 거리 초기화
 
     # 시작 위치 받기
-    # [가중치, 위치]
-    heapq.heappush(heap, [0, start, 0])
-    # 시작점을 초기화한다
-    visited[start] = -1
+    # [누적거리, 위치, 가중치]
+    heapq.heappush(heap, [0, start])
+    visited[start] = 1
 
     while True:
 
@@ -82,24 +84,74 @@ def Dikjstra(start, end):
         temp = heapq.heappop(heap)
         node = temp[1]
 
-        # 거리 갱신
-        temp[2] += temp[0]
-
         # 시작점으로 돌아왔으면 최단경로 리턴
         if(temp[0] != 0 and node == start):
-            return temp[2]
+            return temp[0]
+        
+        # 인수 집에 도착했으면 다시 돌아가야 한다
+        # 힙 초기화, 방문리스트 초기화
+        if(node == end):
+            heap = []
+            visited = [0]*(N+1)
 
         # 방문기록
-        visited[node] += 1
-
+        visited[node] = 1
 
         # 현재 위치에서 갈 수 있는 곳 받기
         for i in range(1, N+1):
             # 방문한 적 없고
             # 연결되어있다면 go
-            if(visited[node] == 0 and adj_list[node][i] != 0):
-                # 위치 저장: [가중치, 다음 위치]
-                heapq.heappush(heap, [adj_list[node][i], i, temp[2]])
+            if(visited[i] == 0 and adj_arr[node][i] != 0):
+                # 위치 저장: [누적거리, 다음 위치, 가중치]
+                heapq.heappush(heap, [temp[0] + adj_arr[node][i], i])
+                
+                
+                
+def Dikjstra_adj_list(start, end):
+    global adj_list
+    global heap
+
+    # 방문리스트 생성
+    visited = [0]*(N+1)
+    
+    # 가중치, 거리 초기화
+
+    # 시작 위치 받기
+    # [누적거리, 위치, 가중치]
+    heapq.heappush(heap, [0, start])
+    visited[start] = 1
+
+    while True:
+
+        # 위치 받기
+        temp = heapq.heappop(heap)
+        node = temp[1]
+
+        # 시작점으로 돌아왔으면 최단경로 리턴
+        if(temp[0] != 0 and node == start):
+            return temp[0]
+        
+        # 인수 집에 도착했으면 다시 돌아가야 한다
+        # 힙 초기화, 방문리스트 초기화
+        if(node == end):
+            heap = []
+            visited = [0]*(N+1)
+
+        # 방문기록
+        visited[node] = 1
+
+        # 현재 위치에서 갈 수 있는 곳 받기
+        for i in range(len(adj_list[node])):
+            # 방문한 적 없고
+            # 연결되어있다면 go
+            if(visited[adj_list[node][i][0]] == 0):
+                # 위치 저장: [누적거리, 다음 위치]
+                heapq.heappush(heap, [temp[0] + adj_list[node][i][1], adj_list[node][i][0]])
+
+
+# import sys
+
+# sys.stdin = open('C:\\Users\\SSAFY\\Downloads\\input.txt', 'r')
 
 
 T = int(input())
@@ -110,17 +162,22 @@ for t in range(1, T+1):
     N, M, X = list(map(int, input().split()))
 
     # 인접행렬 생성
-    adj_list = [[0]*(N+1) for _ in range(N+1)]
+    adj_arr = [[0]*(N+1) for _ in range(N+1)]
+    
+    # 인접 리스트 생성
+    adj_list = [[] for _ in range(N+1)]
 
     for m in range(M):
         # x에서 y로 이동하는데 c의 시간
         x, y, c = list(map(int, input().split()))
 
         # 단방향임
-        adj_list[x][y] = c
+        adj_arr[x][y] = c
+        
+        adj_list[x].append([y,c])
 
     # 힙 초기화(개념적으로만 구현)
-    heap = [0]*N
+    heap = []
     root = 1
     rear = 0
 
@@ -133,7 +190,7 @@ for t in range(1, T+1):
         if(i == X):
             continue
         
-        time = Dikjstra(i, X)
+        time = Dikjstra_adj_list(i, X)
 
         # 최대값 갱신
         if(time > maxx):
@@ -141,4 +198,4 @@ for t in range(1, T+1):
 
 
     # 결과 출력
-    print(f'#{t} {time}')
+    print(f'#{t} {maxx}')
